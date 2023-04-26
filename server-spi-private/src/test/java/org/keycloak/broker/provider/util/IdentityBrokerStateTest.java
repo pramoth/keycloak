@@ -97,4 +97,17 @@ public class IdentityBrokerStateTest {
         Assert.assertEquals("http://i.am.an.url", decodedState.getClientId());
     }
 
+    @Test
+    public void stateWithPlushSignShouldCorrectDecode() {
+        String state = "Z8-FZ0r1wUTuUTVskR9Zjliqj8fhvSPmkBgcFQV3iRQ++";
+        String clientId = "0643a1ae-243e-4289-a278-5bac2507872c";
+        String clientClientId = "account-console";
+        String tabId = "142g15J0cUE";
+        IdentityBrokerState decoded = IdentityBrokerState.decoded(state, clientId, clientClientId, tabId);
+        ClientModel clientModel = new IdentityBrokerStateTestHelpers.TestClientModel(clientId, clientClientId);
+        RealmModel realmModel = new IdentityBrokerStateTestHelpers.TestRealmModel(clientId, clientClientId, clientModel);
+        IdentityBrokerState decodedState = IdentityBrokerState.encoded(decoded.getEncoded(), realmModel);
+        Assert.assertEquals(state, decodedState.getDecodedState());
+    }
+
 }

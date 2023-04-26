@@ -583,7 +583,7 @@ public class OIDCIdentityProvider extends AbstractOAuth2IdentityProvider<OIDCIde
     }
 
     public JsonWebToken validateToken(String encodedToken) {
-        boolean ignoreAudience = false;
+        boolean ignoreAudience = true;
 
         return validateToken(encodedToken, ignoreAudience);
     }
@@ -849,7 +849,8 @@ public class OIDCIdentityProvider extends AbstractOAuth2IdentityProvider<OIDCIde
         String nonce = (String) context.getContextData().get(BROKER_NONCE_PARAM);
 
         if (nonce == null) {
-            throw new IdentityBrokerException("OpenID Provider [" + getConfig().getProviderId() + "] did not return a nonce");
+            logger.info("no nonce for this OIDC");
+            return;
         }
 
         String expectedNonce = authenticationSession.getClientNote(BROKER_NONCE_PARAM);

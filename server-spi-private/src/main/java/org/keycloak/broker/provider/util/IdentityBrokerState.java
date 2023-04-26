@@ -56,13 +56,14 @@ public class IdentityBrokerState {
                 // Ignore...the clientid in the database was not in UUID format. Just use as is.
             }
         }
-        String encodedState = state + "." + tabId + "." + clientIdEncoded;
+        String encodedState = state + "." + tabId + "." + clientIdEncoded.replace("+","..");
 
         return new IdentityBrokerState(state, clientClientId, tabId, encodedState);
     }
 
 
     public static IdentityBrokerState encoded(String encodedState, RealmModel realmModel) {
+        encodedState = encodedState.replace("..","+");
         String[] decoded = DOT.split(encodedState, 3);
 
         String state =(decoded.length > 0) ? decoded[0] : null;
