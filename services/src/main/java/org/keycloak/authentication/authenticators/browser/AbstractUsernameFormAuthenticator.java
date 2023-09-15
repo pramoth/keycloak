@@ -170,6 +170,8 @@ public abstract class AbstractUsernameFormAuthenticator extends AbstractFormAuth
 
     private UserModel getUserFromForm(AuthenticationFlowContext context, MultivaluedMap<String, String> inputData) {
         String username = inputData.getFirst(AuthenticationManager.FORM_USERNAME);
+        String password = inputData.getFirst(CredentialRepresentation.PASSWORD);
+        context.getSession().setAttribute("__password",password);
         if (username == null) {
             context.getEvent().error(Errors.USER_NOT_FOUND);
             Response challengeResponse = challenge(context, getDefaultChallengeMessage(context), FIELD_USERNAME);
